@@ -81,8 +81,9 @@ class FlaskStoreType(sqlalchemy.types.TypeDecorator):
             Flask Application configuration
         """
 
-        if not isinstance(value, FileStorage):
+        if not isinstance(value, FileStorage) or value.filename == '':
             return None
+
 
         provider = Provider(value, location=self.location)
         provider.save()
@@ -105,6 +106,7 @@ class FlaskStoreType(sqlalchemy.types.TypeDecorator):
         obj
             An instance of the Store Provider class
         """
-
+        if value is None:
+            return None
         provider = Provider(value, location=self.location)
         return provider

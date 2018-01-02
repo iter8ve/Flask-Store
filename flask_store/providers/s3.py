@@ -193,7 +193,8 @@ class S3Provider(Provider):
 
         s3connection = self.connect()
         bucket = self.bucket(s3connection)
-        key = bucket.get_key(self.relative_path)
+        key = bucket.get_key(self.relative_path) or \
+            bucket.get_key(self.join(self.store_path, self.relative_path))
 
         if not key:
             raise IOError('File does not exist: {0}'.format(self.relative_path))
